@@ -4,7 +4,7 @@ datos requeridos se encuentran en los archivos `tbl0.tsv`, `tbl1.tsv` y
 `tbl2.tsv`. En este laboratorio solo puede utilizar las funciones y 
 librerias de pandas para resolver las preguntas.
 """
-
+import pandas as pd
 
 def pregunta_10():
     """
@@ -20,3 +20,18 @@ def pregunta_10():
     D                   1:2:3:5:5:7
     E   1:1:2:3:3:4:5:5:5:6:7:8:8:9
     """
+
+    # Cargamos el archivo, indicamos que tiene encabezado y que  \t es el separador
+    table = pd.read_csv(
+        "files/input/tbl0.tsv",
+        header=0,
+        delimiter="\t",
+        index_col=None
+        )
+
+    # Agrupamos por c1, luego tomamos los valores de c2 
+    # aplicamos un agg que lo que hace es ir grupo por grupo, mapear los valores a str, ordenarlos y concatenarlos con :
+    # al final convertimos a df
+    tableResult = pd.DataFrame(table.groupby('c1')['c2'].agg(lambda x: ':'.join(map(str, sorted(x)))))
+    
+    return tableResult
